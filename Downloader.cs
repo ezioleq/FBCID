@@ -1,8 +1,5 @@
 using fbchat_sharp.API;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 public class Downloader{
@@ -19,8 +16,7 @@ public class Downloader{
 					string url = await client.fetchImageUrl(uid);
 					Console.WriteLine(url);
 					using(System.Net.WebClient webclient = new System.Net.WebClient()){
-						Uri uri = new Uri(url);
-						webclient.DownloadFileAsync(uri, $"{Config.contentPath}/{uid}.png");
+						webclient.DownloadFileAsync(new Uri(url), $"{Config.contentPath}/{uid}.png");
 					}
 				}
 			}

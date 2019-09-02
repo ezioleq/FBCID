@@ -16,11 +16,27 @@ public static class Config{
 		Console.WriteLine("Enter E-Mail:");
 		email = Console.ReadLine();
 		Console.WriteLine("Enter password:");
-		password = Console.ReadLine();
-		Console.WriteLine("Enter conversation uid:");
+		password = GetPassword();
+		Console.WriteLine("\nEnter conversation uid:");
 		threadUid = Console.ReadLine();
 		Console.WriteLine("Enter count of messages to read:");
 		string tempCount = Console.ReadLine();
 		Int32.TryParse(tempCount, out messagesCount);
+	}
+
+	public static string GetPassword(){
+		string password = "";
+		ConsoleKeyInfo key;
+
+		do{
+			key = Console.ReadKey(true);
+			if(key.Key != ConsoleKey.Backspace){
+				password += key.KeyChar;
+				Console.Write("*");
+			}else{
+				Console.Write("\b");
+			}
+		}while(key.Key != ConsoleKey.Enter);
+		return password;
 	}
 }

@@ -1,17 +1,14 @@
 # FBCID
 Facebook Conversation Image Downloader
 
-Simple tool to download images (and videos) from your facebook conversation thread.
-
-## Building:
-```csharp
-dotnet build
-```
-should work fine
+A simple tool to download images from your facebook conversation thread to your local storage.
 
 ## Using:
 ```bash
-# bin/Debug/netcoreapp2.2/ or whatever you have
-dotnet FBCID.dll
+# to install required libraries run
+pip install -r requirements.txt
+
+# and to start script just
+python fbcid.py
 ```
-After program start it shows you what to do. Just log in and choose a tread to download from.
+When you start the script, it shows what to do. All you have to do is log in and select the thread to download from.

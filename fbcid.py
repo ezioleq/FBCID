@@ -1,4 +1,5 @@
 import wget
+import sys
 import os
 from fbchat import Client
 from fbchat.models import *
@@ -13,11 +14,17 @@ FBCID (Facebook Conversation Image Downloader)
 email = str(input('Enter email: '))
 pswd = getpass('Enter password: ')
 
-client = Client(email, pswd, max_tries=3)
+try:
+	print('Logging in...')
+	client = Client(email, pswd, logging_level=50)
+except FBchatUserError as e:
+	print(e)
+	sys.exit();
 
 thread_limit = 15
 
-if client.isLoggedIn():
+if client is not None and client.isLoggedIn():
+	print('Logged in as ' + email)
 	threads = client.fetchThreadList(limit=thread_limit)
 
 	for i in range(thread_limit):
@@ -33,19 +40,20 @@ if client.isLoggedIn():
 		if not os.path.isdir(thread_uid):
 			os.mkdir(thread_uid)
 
-		images = client.fetchThreadImages(thread_uid)
+		attachments = client.fetchThreadImages(thread_uid)
 		
-		image_count = 0
-		for image in images:
-			url = client.fetchImageUrl(image.uid)
+		files_count = 0
+		for attachment in attachments:
+			url = client.fetchImageUrl(attachment.uid)
 			
-			wget.download(url, thread_uid + '/' + image.uid + '.png')			
-			image_count += 1
+			if type(attachment) == ImageAttachment:
+				wget.download(url, thread_uid + '/' + attachment.uid + '.png')
+			elif type(attachment) == VideoAttachment:
+				wget.download(url, thread_uid + '/' + attachment.uid + '.mp4')
+			
+			files_count += 1
 
-			if image_count > 1:
-				print(' Downloaded {} images'.format(image_count))
-			else:
-				print(' Downloaded {} image'.format(image_count))
+			print(' Downloaded {} {}'.format(files_count, ['file', 'files'][files_count > 1]))
 
 	else:
 		print('Select thread from 0-{}!'.format(thread_limit-1))

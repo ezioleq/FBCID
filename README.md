@@ -1,7 +1,7 @@
 # FBCID
 Facebook Conversation Image Downloader
 
-A simple tool to download images from your facebook conversation thread to your local storage.
+A simple tool to download images (and videos) from your facebook conversation thread to your local storage.
 
 ## Using:
 ```bash

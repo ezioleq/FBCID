@@ -44,7 +44,11 @@ if client is not None and client.isLoggedIn():
 		
 		files_count = 0
 		for attachment in attachments:
-			url = client.fetchImageUrl(attachment.uid)
+			try:
+				url = client.fetchImageUrl(attachment.uid)
+			except FBchatException as e:
+				print(e)
+				continue
 			
 			if type(attachment) == ImageAttachment:
 				wget.download(url, thread_uid + '/' + attachment.uid + '.png')

@@ -37,8 +37,10 @@ if client is not None and client.isLoggedIn():
 		thread_uid = client.fetchThreadInfo(threads[selected_thread].uid)[threads[selected_thread].uid].uid
 		print('Selected thread uid: {}'.format(thread_uid))
 
-		if not os.path.isdir(thread_uid):
-			os.mkdir(thread_uid)
+		thread_dir = os.path.join(os.path.dirname(__file__), thread_uid)
+
+		if not os.path.isdir(thread_dir):
+			os.mkdir(thread_dir)
 
 		attachments = client.fetchThreadImages(thread_uid)
 		
@@ -51,9 +53,9 @@ if client is not None and client.isLoggedIn():
 				continue
 			
 			if type(attachment) == ImageAttachment:
-				wget.download(url, thread_uid + '/' + attachment.uid + '.png')
+				wget.download(url, thread_dir + '/' + attachment.uid + '.png')
 			elif type(attachment) == VideoAttachment:
-				wget.download(url, thread_uid + '/' + attachment.uid + '.mp4')
+				wget.download(url, thread_dir + '/' + attachment.uid + '.mp4')
 			
 			files_count += 1
 
